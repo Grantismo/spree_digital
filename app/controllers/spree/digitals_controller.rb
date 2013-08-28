@@ -12,10 +12,14 @@ module Spree
         # remote files (e.g. S3)
         if attachment_is_file?
           if digital_link.authorize!
-            file_sent = send_file attachment.path, 
-                                  :filename => attachment.original_filename, 
-                                  :type => attachment.content_type
-            return if file_sent
+            if Spree::Config[:use_s3]
+              redirect_to attachment.expiring_url(Spree::DigitalConfiguration[:s3_expiration_seconds]) 
+            else
+              file_sent = send_file attachment.path, 
+                                    :filename => attachment.original_filename, 
+                                    :type => attachment.content_type
+              return if file_sent
+            end
           end
         else
           Rails.logger.error "Missing Digital Item: #{attachment.path}"
