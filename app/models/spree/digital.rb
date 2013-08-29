@@ -15,8 +15,7 @@ module Spree
 
 
 
-    
-  
     # TODO: Limit the attachment to one single file. Paperclip supports many by default :/
+    attr_accessible :variant_id, :attachment
   end
 end
