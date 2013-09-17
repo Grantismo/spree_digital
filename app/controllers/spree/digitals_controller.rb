@@ -15,7 +15,7 @@ module Spree
         if attachment.exists?
           if link.authorize!
             if Spree::Config[:use_s3] && link.authorize!
-              redirect_to attachment.expiring_url(Spree::DigitalConfiguration[:s3_expiration_seconds]) 
+              redirect_to attachment.expiring_url(Spree::DigitalConfiguration[:s3_expiration_seconds]) and return
             else
               send_file attachment.path, :filename => attachment.original_filename, :type => attachment.content_type and return
             end
